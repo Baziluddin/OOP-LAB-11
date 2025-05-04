@@ -1,0 +1,92 @@
+//24k-0559 Bazil-Uddin-Khan 
+#include <iostream>
+#include<exception>
+using namespace std;
+
+class StackOverFlowException : std::exception
+{
+    public:
+    const char* what() const noexcept override
+    {
+        return "Stack Full Exception Error";
+    }
+};
+
+class StackUnderFlowException : std::exception
+{
+    public:
+    const char* what() const noexcept override
+    {
+        return "Stack Empty Exception Error";
+    }
+    
+};
+
+template<typename T>
+class Stack
+{
+    T capacity[3];
+    int trackpointer;
+    
+    public:
+    Stack() : trackpointer(0)
+    {}
+    
+    void Push(int num)
+    {
+        if(trackpointer < 3)
+        {
+            capacity[trackpointer] = num;
+            cout << "Succesfully Poped In Number : " << capacity[trackpointer] << endl;
+            trackpointer++;
+        }
+        else
+        {
+            throw StackOverFlowException();
+        }
+    }
+    
+    void Pop()
+    {
+        if(trackpointer == 0)
+        {
+            throw StackUnderFlowException();
+        }
+        else
+        {
+            cout << "Succesfully Poped Out The Number : " << capacity[trackpointer] << " from stack " << endl;
+        }
+    }
+};
+
+int main()
+{
+    Stack<int>stack;
+    
+    
+    try
+    {
+        stack.Pop();
+    }
+    
+    catch(StackUnderFlowException & e)
+    {
+        cout << "Exception is:" << e.what() << endl;
+    }
+
+    try
+    {
+        stack.Push(78);
+        stack.Push(89);
+        stack.Push(100);
+        stack.Push(50);
+    }
+    
+    
+    catch(StackOverFlowException & e)
+    {
+        cout << "Exception is:" << e.what() << endl;
+        
+    }
+    return 0;
+}
