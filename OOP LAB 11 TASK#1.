@@ -1,0 +1,39 @@
+// 24k-0559 Bazil-Uddin-Khan
+#include<iostream>
+#include<exception>
+using namespace std;
+class InvalidValueException : public std ::exception
+{
+    public:
+    const char* what () const noexcept override
+    {
+        return " Invalid Age Negative Exception . Cant be Negative or Greater than 120 ";
+    }
+};
+
+void validateFunction(int age)
+{
+        if(age < 0 || age > 120)
+        {
+           throw InvalidValueException();
+        }
+}
+
+int main() 
+{
+    int Age;
+    cout << "Enter Age" << endl;
+    cin >> Age;
+    
+    try
+    {
+        validateFunction(Age);
+    }
+    
+    catch(InvalidValueException & e)
+    {
+        cout << "Error " << e.what() << endl;
+    }
+
+    return 0;
+}
