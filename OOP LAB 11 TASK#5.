@@ -1,0 +1,59 @@
+// 24k-0559 Bazil-Uddin-Khan Bscs-2H 
+
+#include<iostream>
+using namespace std;
+
+class InsuffiecientFundsException : std :: exception
+{
+    public:
+    const char* what() const noexcept override
+    {
+        return "Exception Insufficient Funds In Account";
+    }
+};
+
+template<typename T>
+class BankAccount
+{
+    private:
+    T balance;
+
+    public:
+    BankAccount(T bal) : balance(bal)
+    {}
+
+    void withdraw(T withdraw)
+    {
+       if(balance < withdraw)
+       {
+        throw InsuffiecientFundsException();
+       }
+        
+    }
+    
+    T GetBalance()
+    {
+        return balance;
+    }
+
+
+};
+
+int main()
+{
+    BankAccount<int> bank(500);
+    
+    cout << "Current Balance Is " << bank.GetBalance() << endl;
+    
+    
+    try
+    {
+        bank.withdraw(600);
+    }
+    catch(InsuffiecientFundsException & e)
+        {
+            cout << " Exception is " << e.what() << endl;
+        }
+    
+
+}
