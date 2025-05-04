@@ -1,0 +1,72 @@
+// 24k-0559 Bazil-Uddin-Khan 
+#include <iostream>
+#include<exception>
+#include<fstream>
+using namespace std;
+
+class FileException : public std::exception
+{
+    virtual const char* what() 
+    {
+        return "File Error!.Exception";
+    }
+};
+
+class FileNotFoundException : public FileException
+{
+    public:
+    const char* what()const noexcept override
+    {
+        return "File Not Found Exception";
+    }
+};
+
+class PermissionDeniedException : public FileException
+{
+    public:
+    const char* what() const noexcept override
+    {
+        return "File Permission Denied Exception";
+    }
+};
+
+void readFile(string  filename)
+{
+    if(filename == "secret.txt")
+    {
+        throw PermissionDeniedException();
+    }
+    
+    ifstream stream;
+    stream.open(filename);
+    if(!stream)
+    {
+        cerr << "Cant open" << endl;
+        throw FileNotFoundException();
+    }
+    
+    stream.close();
+}
+
+
+int main() 
+{
+    try
+    {
+        readFile("secret.txt");
+        
+    }
+    
+    catch(FileNotFoundException & e)
+    {
+        cout << "File Not Found Exception " << e.what() << endl;
+    }
+    
+    catch(PermissionDeniedException & e)
+    {
+        cout << "Permission of file denied Exception " << e.what() << endl;
+    }
+    
+
+    return 0;
+}
